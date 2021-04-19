@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -5,7 +6,7 @@ import java.util.TimerTask;
 public class Proj2 {
 
     ArrayList<Process> firstFitProcesses = new ArrayList<Process>();
-    ArrayList<String> firstFitFrames = new ArrayList<String>();
+    ArrayList<ArrayList<String>> firstFitFrames = new ArrayList<ArrayList<String>>();
     ArrayList<Integer> firstFitMemoryBlock = new ArrayList<Integer>();
 
     ArrayList<Process> bestFitProcesses = new ArrayList<Process>();
@@ -138,11 +139,13 @@ public class Proj2 {
                 }
              }
         }
-
+        ArrayList<String> thisFrame = new ArrayList<String>();
         for (int x : firstFitMemoryBlock) {
-            System.out.println(x);
+            thisFrame.add(String.valueOf(x));
+//            System.out.println(x);
         }
-        System.out.println();
+        firstFitFrames.add(thisFrame);
+//        System.out.println();
 
         for (Process x : firstFitProcesses) {
             if (x.getIsRunning() && x.getRunTime() > 0) {
@@ -171,6 +174,13 @@ public class Proj2 {
 
             if (isFinished) {
                 firstFitTimer.cancel();
+                for (int j = 0; j < 20; j++) {
+                    for (int i = 0; i < firstFitFrames.size(); i ++) {
+
+                        System.out.print(firstFitFrames.get(i).get(j) + "\t");
+                    }
+                    System.out.println();
+                }
             }
 
         }
