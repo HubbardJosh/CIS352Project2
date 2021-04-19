@@ -14,7 +14,7 @@ public class Proj2 {
     ArrayList<Process> worstFitProcesses = new ArrayList<Process>();
     ArrayList<String> worstFitFrames = new ArrayList<String>();
 
-    Timer timer = new Timer();
+    Timer firstFitTimer = new Timer();
 
     public Proj2() {
         firstFitProcesses = generateProcesses();
@@ -24,7 +24,7 @@ public class Proj2 {
         worstFitProcesses = generateProcesses();
 
 
-        timer.schedule(new TimerTask() {
+        firstFitTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 runFirstFit();
@@ -86,6 +86,7 @@ public class Proj2 {
         int count = 0;
         int startIndex = 0;
         int endIndex = 0;
+        boolean isFinished = true;
 
         for (Process x : firstFitProcesses) {    // get next process that isn't currently running
             if (!x.getIsRunning() && !x.getIsFinished()) {
@@ -94,7 +95,9 @@ public class Proj2 {
                 count = next.getSize();
                 break;
             }
+
         }
+
 
         if (count > 0) {
             for (int i = 0; i < firstFitMemoryBlock.size(); i++) {  // find start index of free memory hole
@@ -152,6 +155,22 @@ public class Proj2 {
                         firstFitMemoryBlock.set(i, 0);
                     }
                 }
+            }
+
+            if (!x.getIsFinished()) {
+                isFinished = false;
+            }
+        }
+
+        if (isFinished) {
+            for (int x : firstFitMemoryBlock) {
+                if (x != 0) {
+                    isFinished = false;
+                }
+            }
+
+            if (isFinished) {
+                firstFitTimer.cancel();
             }
 
         }
