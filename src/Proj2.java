@@ -40,6 +40,7 @@ public class Proj2 {
                 runFirstFit();
                 runBestFit();
                 runWorstFit();
+                updateGUI();
             }
         }, 0, 1000);
 
@@ -172,9 +173,7 @@ public class Proj2 {
             if (isFinished && !endFirst) {
                 endFirst = true;
                 endTimer += 1;
-                if (endTimer == 3) {
-                    timer.cancel();
-                }
+
 
                 System.out.println("\n\nFirst Fit");
                 for (int j = 0; j < 20; j++) {  // print out frames for duration of algorithm
@@ -329,9 +328,7 @@ public class Proj2 {
             if (isFinished && !endBest) {
                 endBest = true;
                 endTimer += 1;
-                if (endTimer == 3) {
-                    timer.cancel();
-                }
+
 
                 // print out total frames to complete running algorithm
                 System.out.println("\n\nBest Fit");
@@ -339,8 +336,9 @@ public class Proj2 {
                     for (int i = 0; i < bestFitFrames.size(); i ++) {
                             System.out.print(bestFitFrames.get(i).get(j) + "\t");
                     }
+                    System.out.println();
                 }
-                System.out.println();
+
             }
         }
     }
@@ -478,9 +476,7 @@ public class Proj2 {
             if (isFinished && !endWorst) {
                 endWorst = true;
                 endTimer += 1;
-                if (endTimer == 3) {
-                    timer.cancel();
-                }
+
 
                 // print frames of algorithm runtime
                 System.out.println("\n\nWorst Fit");
@@ -491,6 +487,16 @@ public class Proj2 {
                     System.out.println();
                 }
             }
+        }
+    }
+
+    private void updateGUI() {
+        // update GUI here
+        // use either the FitMemoryBlock or FitFrames arrays to update GUI accordingly
+
+        // cancel timer when all three algorithms are done running
+        if (endTimer == 3) {
+            timer.cancel();
         }
     }
 
