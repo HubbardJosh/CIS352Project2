@@ -49,25 +49,25 @@ public class Proj2 {
     // used to populate the same static process array for each algorithm
     private ArrayList<Process> generateProcesses() {
         ArrayList<Process> list = new ArrayList<Process>();
-        list.add(new Process(1,3, 4));
-        list.add(new Process(2,2, 3));
-        list.add(new Process(3,9, 12));
-        list.add(new Process(4,4, 5));
-        list.add(new Process(5,3, 3));
+        list.add(new Process(1,7, 5));
+        list.add(new Process(2,3, 4));
+        list.add(new Process(3,3, 2));
+        list.add(new Process(4,2, 5));
+        list.add(new Process(5,6, 3));
         list.add(new Process(6,4, 5));
-        list.add(new Process(7,3, 4));
-        list.add(new Process(8,3, 4));
+        list.add(new Process(7,6, 4));
+        list.add(new Process(8,3, 6));
         list.add(new Process(9,9, 3));
         list.add(new Process(10,5, 6));
-        list.add(new Process(11,6, 8));
-        list.add(new Process(12,3, 7));
+        list.add(new Process(11,2, 8));
+        list.add(new Process(12,4, 7));
         list.add(new Process(13,3, 4));
         list.add(new Process(14,6, 7));
         list.add(new Process(15,7, 9));
-        list.add(new Process(16,2, 3));
+        list.add(new Process(16,8, 3));
         list.add(new Process(17,3, 4));
         list.add(new Process(18,5, 6));
-        list.add(new Process(19,15, 6));
+        list.add(new Process(19,8, 6));
         list.add(new Process(20,2, 3));
 
         return list;
@@ -175,14 +175,7 @@ public class Proj2 {
                 endTimer += 1;
 
 
-                System.out.println("\n\nFirst Fit");
-                for (int j = 0; j < 20; j++) {  // print out frames for duration of algorithm
-                    for (int i = 0; i < firstFitFrames.size(); i ++) {
 
-                        System.out.print(firstFitFrames.get(i).get(j) + "\t");
-                    }
-                    System.out.println();
-                }
             }
 
         }
@@ -330,14 +323,6 @@ public class Proj2 {
                 endTimer += 1;
 
 
-                // print out total frames to complete running algorithm
-                System.out.println("\n\nBest Fit");
-                for (int j = 0; j < 20; j++) {
-                    for (int i = 0; i < bestFitFrames.size(); i ++) {
-                            System.out.print(bestFitFrames.get(i).get(j) + "\t");
-                    }
-                    System.out.println();
-                }
 
             }
         }
@@ -478,25 +463,99 @@ public class Proj2 {
                 endTimer += 1;
 
 
-                // print frames of algorithm runtime
-                System.out.println("\n\nWorst Fit");
-                for (int j = 0; j < 20; j++) {
-                    for (int i = 0; i < worstFitFrames.size(); i ++) {
-                        System.out.print(worstFitFrames.get(i).get(j) + "\t");
-                    }
-                    System.out.println();
-                }
+
             }
         }
     }
 
+    int timePassed = 0;
     private void updateGUI() {
         // update GUI here
-        // use either the FitMemoryBlock or FitFrames arrays to update GUI accordingly
+
+        timePassed += 1;
+
+        String first = "";
+        String best = "";
+        String worst = "";
+
+        for (int i = 0; i < 20; i++) {
+            if (!firstFitProcesses.get(i).getIsRunning() && first.equals("") && !firstFitProcesses.get(i).getIsFinished()) {
+                first = "Process: " + firstFitProcesses.get(i).getID() + " Size: " + firstFitProcesses.get(i).getSize();
+            }
+            if (!bestFitProcesses.get(i).getIsRunning() && best.equals("") && !bestFitProcesses.get(i).getIsFinished()) {
+                best = "Process: " + bestFitProcesses.get(i).getID() + " Size: " + bestFitProcesses.get(i).getSize();
+            }
+            if (!worstFitProcesses.get(i).getIsRunning() && worst.equals("") && !worstFitProcesses.get(i).getIsFinished()) {
+                worst = "Process: " + worstFitProcesses.get(i).getID() + " Size: " + worstFitProcesses.get(i).getSize();
+            }
+        }
+
+        if (first.equals("")) {
+            first = "None";
+        }
+        if (best.equals("")) {
+            best = "None";
+        }
+        if (worst.equals("")) {
+            worst = "None";
+        }
+
+        System.out.println("Next process for First Fit: Process " + first);
+        System.out.println("Next process for Best Fit: Process " + best);
+        System.out.println("Next process for Worst Fit: Process " + worst + "\n");
+
+        System.out.println("First Fit\t\t\tBest Fit\t\t\tWorst Fit");
+
+        for (int j = 0; j < 20; j++) {
+            if (firstFitMemoryBlock.get(j) > 0) {
+                first = ("Process " + firstFitMemoryBlock.get(j) + "\t\t\t");
+            } else {
+                first = "Free Memory Frame\t";
+            }
+            if (bestFitMemoryBlock.get(j) > 0) {
+                best = ("Process " + bestFitMemoryBlock.get(j) + "\t\t\t");
+            } else {
+                best = "Free Memory Frame\t";
+            }
+            if (worstFitMemoryBlock.get(j) > 0) {
+                worst = ("Process " + worstFitMemoryBlock.get(j) + "\t\t\t");
+            } else {
+                worst = "Free Memory Frame\t";
+            }
+
+            System.out.println(first + best + worst);
+        }
+
+        System.out.println("\nTime Units Passed: " + timePassed + "\n\n");
 
         // cancel timer when all three algorithms are done running
         if (endTimer == 3) {
             timer.cancel();
+
+            System.out.println("\n\nFirst Fit");
+            for (int j = 0; j < 20; j++) {  // print out frames for duration of algorithm
+                for (int i = 0; i < firstFitFrames.size(); i ++) {
+
+                    System.out.print(firstFitFrames.get(i).get(j) + "\t");
+                }
+                System.out.println();
+            }
+
+            System.out.println("\n\nBest Fit");
+            for (int j = 0; j < 20; j++) {
+                for (int i = 0; i < bestFitFrames.size(); i ++) {
+                    System.out.print(bestFitFrames.get(i).get(j) + "\t");
+                }
+                System.out.println();
+            }
+
+            System.out.println("\n\nWorst Fit");
+            for (int j = 0; j < 20; j++) {
+                for (int i = 0; i < worstFitFrames.size(); i ++) {
+                    System.out.print(worstFitFrames.get(i).get(j) + "\t");
+                }
+                System.out.println();
+            }
         }
     }
 
